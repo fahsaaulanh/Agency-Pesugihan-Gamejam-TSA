@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Tuyul Unyu
   m_EditorClassIdentifier: 
   jurigName: Tuyul Unyu
+  jurigImage: {fileID: 21300000, guid: d9e30133ccfe0304198f69f2af2b1428, type: 3}
+  jurigRole: 0
   salary: 500
   income: 2500
-  description: Tuyul ini unyu sekaleh :)))
+  description: []

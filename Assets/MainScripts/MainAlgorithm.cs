@@ -1,33 +1,57 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MainAlgorithm : MonoBehaviour
 {
-    public JurigData[] jurigs = new JurigData[4]; // Array untuk menyimpan 4 karyawan
+    public static event Action OnDayChanged;
+    public List<JurigData> jurigs;
+    public List<JurigData> workingJurigs;
     public float placeCost = 200f; // Biaya tempat awal
     public float uang = 1000f;     // Uang awal
+    public float totalIncome = 0;
 
+    //These variable is related to InGameUI
+    [Header("These are related to InGameUI")]
+    [Space]
     public InGameUI myInGameUI;
 
-    public float WaitDuration, WaitToHideIO_Text;
+    public float waitDuration, waitToHideIO_Text;
+
+    [Space]
+    public int customerCount;
+    public List<CustomerData> jobs;
+    
 
     private void Start()
     {
         RemoveDuplicateJurigData();
 
         Debug.Log("Main Algorithm Dimulai");
-        StartCoroutine(CalculateVariables());
+        StartCoroutine(DayCycle());
     }
 
-    private IEnumerator CalculateVariables()
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            customerCount ++;
+            myInGameUI.increaseCustomerCount();
+
+        }
+    }
+
+    private IEnumerator DayCycle()
     {
         while (true)
         {
-            yield return new WaitForSeconds(WaitDuration); // Tunggu selama 10 detik
-
+            yield return new WaitForSeconds(waitDuration); // Tunggu selama 10 detik
+            
             // Logika untuk menghitung variabel
-            float totalIncome = CalculateTotalIncome();
+            totalIncome = 0;
+
+            DayChanged();
+            
             float totalSalary = CalculateTotalSalary();
             float totalOutcome = totalSalary + placeCost;
 
@@ -45,10 +69,15 @@ public class MainAlgorithm : MonoBehaviour
         }
     }
 
-    private float CalculateTotalIncome()
+    private void DayChanged()
+    {
+        OnDayChanged?.Invoke();
+    }
+
+    public float CalculateTotalIncome(List<JurigData> localJurigs)
     {
         float totalIncome = 0f;
-        foreach (JurigData jurig in jurigs)
+        foreach (JurigData jurig in localJurigs)
         {
             if (jurig != null)
             {
@@ -65,7 +94,7 @@ public class MainAlgorithm : MonoBehaviour
         {
             if (jurig != null)
             {
-                totalSalary += jurig.salary;
+                totalSalary += jurig.passiveSalary;
             }
         }
         return totalSalary;
@@ -74,7 +103,7 @@ public class MainAlgorithm : MonoBehaviour
     private void RemoveDuplicateJurigData()
     {
         HashSet<JurigData> uniqueJurigData = new HashSet<JurigData>();
-        for (int i = 0; i < jurigs.Length; i++)
+        for (int i = 0; i < jurigs.Count; i++)
         {
             JurigData jurig = jurigs[i];
             if (jurig != null)

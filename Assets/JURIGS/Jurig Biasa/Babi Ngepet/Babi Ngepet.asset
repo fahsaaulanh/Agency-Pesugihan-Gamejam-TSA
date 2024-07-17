@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b461a2d8c3c6944a6696db81ca028b, type: 3}
   m_Name: Babi Ngepet
   m_EditorClassIdentifier: 
-  jurigName: Inosubabi
-  salary: 1000
-  income: 5000
-  description: Ati-ati, jangan sampe lilin-nya mati!
+  jurigName: Babi Kocak
+  jurigImage: {fileID: 21300000, guid: 14dc0d08620aa4a4b98f56692e056f74, type: 3}
+  jurigRole: 0
+  salary: 13000
+  income: 30000
+  description:
+  - Bukannya mencuri uang milik para warga, babi ngepet satu ini lebih memilih untuk
+    jadi stand up(?) komedian.
